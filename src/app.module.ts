@@ -6,6 +6,10 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from './middleware/logger/logger.middleware';
 import { AuthModule } from './auth/auth.module';
+import { FishLotsModule } from './fish-lots/fish-lots.module';
+import { BuyersModule } from './buyers/buyers.module';
+import { OrdersModule } from './orders/orders.module';
+import { DeliveriesModule } from './deliveries/deliveries.module';
 
 @Module({
   imports: [
@@ -14,7 +18,12 @@ import { AuthModule } from './auth/auth.module';
       envFilePath: 'env/.env',
     }),
     DatabaseModule, // ✅ DB connection here
-    FishermenModule, AuthModule,
+    FishermenModule,
+    AuthModule,
+    FishLotsModule,
+    BuyersModule,
+    OrdersModule,
+    DeliveriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

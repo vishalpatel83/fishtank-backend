@@ -18,8 +18,8 @@ import { ResultModal } from '../common/result';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('fishermen')
-@ApiBearerAuth('access-token')
-@UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('access-token')
+// @UseGuards(JwtAuthGuard)
 @Controller('fishermen')
 export class FishermenController {
   constructor(private readonly fishermenService: FishermenService) { }

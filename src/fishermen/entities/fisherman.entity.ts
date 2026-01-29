@@ -3,7 +3,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { FishLot } from '../../fish-lots/entities/fish-lot.entity';
 
 export enum FishermanStatus {
   ACTIVE = 'Active',
@@ -58,4 +60,7 @@ export class Fisherman {
     default: FishermanStatus.PENDING,
   })
   status: FishermanStatus;
+
+  @OneToMany(() => FishLot, (fishLot) => fishLot.fisherman)
+  fishLots: FishLot[];
 }
