@@ -15,7 +15,7 @@ import { DeliveriesModule } from './deliveries/deliveries.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'env/.env',
+      envFilePath: '.env',
     }),
     DatabaseModule, // ✅ DB connection here
     FishermenModule,
