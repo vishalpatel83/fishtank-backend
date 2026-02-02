@@ -16,6 +16,13 @@ export enum FishermanStatus {
   PENDING = 'Pending',
 }
 
+export enum FishermanRole {
+  ADMIN = 'admin',
+  FISHERMAN = 'fisherman',
+  BUYER = 'buyer',
+  DELIVERYMAN = 'deliveryman',
+}
+
 export class CreateFishermanDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -89,4 +96,9 @@ export class CreateFishermanDto {
   @IsOptional()
   @IsEnum(FishermanStatus)
   status?: FishermanStatus;
+
+  @ApiProperty({ enum: FishermanRole, example: FishermanRole.FISHERMAN, description: 'Fisherman role' })
+  @IsOptional()
+  @IsEnum(FishermanRole)
+  role?: FishermanRole;
 }

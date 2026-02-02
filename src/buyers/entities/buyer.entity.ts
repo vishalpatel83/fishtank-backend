@@ -4,8 +4,11 @@ import {
     Column,
     CreateDateColumn,
     OneToMany,
+    OneToOne,
+    JoinColumn,
 } from 'typeorm';
 import { Order } from '../../orders/entities/order.entity';
+import { User } from '../../users/entities/user.entity';
 
 export enum BuyerStatus {
     ACTIVE = 'Active',
@@ -48,6 +51,13 @@ export class Buyer {
         default: BuyerStatus.ACTIVE,
     })
     status: BuyerStatus;
+
+    @Column({ name: 'user_id', nullable: true })
+    user_id: number;
+
+    @OneToOne(() => User, (user) => user.buyer)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
 
     @OneToMany(() => Order, (order) => order.buyer)
     orders: Order[];

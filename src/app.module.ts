@@ -10,6 +10,7 @@ import { FishLotsModule } from './fish-lots/fish-lots.module';
 import { BuyersModule } from './buyers/buyers.module';
 import { OrdersModule } from './orders/orders.module';
 import { DeliveriesModule } from './deliveries/deliveries.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { DeliveriesModule } from './deliveries/deliveries.module';
     BuyersModule,
     OrdersModule,
     DeliveriesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
