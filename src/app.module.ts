@@ -11,12 +11,13 @@ import { BuyersModule } from './buyers/buyers.module';
 import { OrdersModule } from './orders/orders.module';
 import { DeliveriesModule } from './deliveries/deliveries.module';
 import { UsersModule } from './users/users.module';
+import { DeliveryPartnersModule } from './delivery-partners/delivery-partners.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'env/.env',
+      envFilePath: '.env',
     }),
     DatabaseModule, // ✅ DB connection here
     FishermenModule,
@@ -26,6 +27,7 @@ import { UsersModule } from './users/users.module';
     OrdersModule,
     DeliveriesModule,
     UsersModule,
+    DeliveryPartnersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

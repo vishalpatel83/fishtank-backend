@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Buyer } from '../../buyers/entities/buyer.entity';
 import { Fisherman } from '../../fishermen/entities/fisherman.entity';
+import { DeliveryPartner } from '../../delivery-partners/entities/delivery-partner.entity';
 
 export enum UserRole {
     FISHERMAN = 'FISHERMAN',
@@ -64,4 +65,7 @@ export class User {
 
     @OneToOne(() => Fisherman, (fisherman) => fisherman.user)
     fisherman: Fisherman;
+
+    @OneToOne(() => DeliveryPartner, (deliveryPartner) => deliveryPartner.user)
+    deliveryPartner: DeliveryPartner;
 }
