@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
+import { UserRole } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -13,10 +15,33 @@ export class UsersService {
     ) { }
 
     async create(createUserDto: CreateUserDto) {
-        const { password, ...userData } = createUserDto;
+        const { password, confirmPassword, phone, role, ...userData } = createUserDto;
+
+        // Map phone to mobile_number if not provided
+        if (!userData.mobile_number && phone) {
+            userData.mobile_number = phone;
+        }
+
+        // Map role "1" to FISHERMAN, or use provided role
+        // Map role "2" to INDUSTRY_BUYER
+        let userRole: UserRole;
+        if (role === '1') {
+            userRole = UserRole.FISHERMAN;
+        } else if (role === '2') {
+            userRole = UserRole.INDUSTRY_BUYER;
+        } else if (role === '3') {
+            userRole = UserRole.DELIVERY_PERSON;
+        } else {
+            userRole = UserRole.FISHERMAN;
+        }
+
+        const saltOrRounds = 10;
+        const hash = await bcrypt.hash(password, saltOrRounds);
+
         const user = this.usersRepository.create({
             ...userData,
-            password_hash: password, // Note: In a real app, hash the password here
+            role: userRole,
+            password_hash: hash,
         });
         return await this.usersRepository.save(user);
     }

@@ -40,6 +40,21 @@ export class User {
     @Column({ length: 255 })
     password_hash: string;
 
+    @Column({ length: 20, nullable: true })
+    aadhaar_number: string;
+
+    @Column({ length: 255, nullable: true })
+    address: string;
+
+    @Column({ length: 50, nullable: true })
+    bank_account_no: string;
+
+    @Column({ length: 20, nullable: true })
+    ifsc_code: string;
+
+    @Column({ length: 100, nullable: true })
+    location: string;
+
     @Column({
         type: 'enum',
         enum: UserRole,
