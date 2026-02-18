@@ -21,23 +21,15 @@ export class Buyer {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ length: 100 })
-    name: string;
+    @Column({ name: 'user_id' })
+    user_id: number;
 
-    @Column({ length: 150, unique: true, nullable: true })
-    email: string;
-
-    @Column({ length: 15 })
-    phone: string;
-
-    @Column({ length: 255 })
-    password_hash: string;
+    @OneToOne(() => User, (user) => user.buyer)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
 
     @Column({ length: 150, nullable: true })
     company_name: string;
-
-    @Column('text', { nullable: true })
-    address: string;
 
     @Column({ length: 20, nullable: true })
     gst_number: string;
@@ -51,13 +43,6 @@ export class Buyer {
         default: BuyerStatus.ACTIVE,
     })
     status: BuyerStatus;
-
-    @Column({ name: 'user_id', nullable: true })
-    user_id: number;
-
-    @OneToOne(() => User, (user) => user.buyer)
-    @JoinColumn({ name: 'user_id' })
-    user: User;
 
     @OneToMany(() => Order, (order) => order.buyer)
     orders: Order[];

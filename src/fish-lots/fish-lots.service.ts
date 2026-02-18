@@ -13,7 +13,13 @@ export class FishLotsService {
     ) { }
 
     async create(createFishLotDto: CreateFishLotDto) {
-        const fishLot = this.fishLotsRepository.create(createFishLotDto);
+        const { catchDate, catchLocation, qualityGrade, ...rest } = createFishLotDto;
+        const fishLot = this.fishLotsRepository.create({
+            ...rest,
+            catch_date: catchDate ? new Date(catchDate) : undefined,
+            catch_location: catchLocation,
+            quality_grade: qualityGrade,
+        });
         return await this.fishLotsRepository.save(fishLot);
     }
 

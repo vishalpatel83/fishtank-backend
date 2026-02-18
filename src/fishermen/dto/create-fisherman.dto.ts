@@ -4,27 +4,16 @@ import {
   IsString,
   IsEmail,
   IsOptional,
-  IsDateString,
   IsBoolean,
   IsEnum,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
-export enum FishermanStatus {
-  ACTIVE = 'Active',
-  SUSPENDED = 'Suspended',
-  PENDING = 'Pending',
-}
-
-export enum FishermanRole {
-  ADMIN = 'admin',
-  FISHERMAN = 'fisherman',
-  BUYER = 'buyer',
-  DELIVERYMAN = 'deliveryman',
-}
+import { FishermanStatus } from '../entities/fisherman.entity';
 
 export class CreateFishermanDto {
-  @ApiProperty()
+  // ── Common fields (forwarded to users table) ──
+
+  @ApiProperty({ example: 'John Doe', description: 'Full name' })
   @IsNotEmpty()
   @IsString()
   @Length(1, 100)
@@ -41,64 +30,56 @@ export class CreateFishermanDto {
   @Length(10, 15)
   phone: string;
 
-  @ApiProperty({ example: 'password123', description: 'Password hash' })
+  @ApiProperty({ example: 'password123', description: 'Password' })
   @IsNotEmpty()
   @IsString()
   @Length(6, 255)
-  password_hash: string;
+  password: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
+  @ApiProperty({ example: '123 Harbor Road', description: 'Address', required: false })
+  @IsOptional()
   @IsString()
-  address: string;
+  address?: string;
 
-  @ApiProperty({ example: 'Port City', description: 'Location' })
-  @IsNotEmpty()
+  @ApiProperty({ example: 'Port City', description: 'Location', required: false })
+  @IsOptional()
   @IsString()
   @Length(1, 100)
-  location: string;
+  location?: string;
 
-  @ApiProperty({ example: '12345678901234', description: 'Aadhaar number' })
-  @IsNotEmpty()
+  @ApiProperty({ example: '123456789012', description: 'Aadhaar number', required: false })
+  @IsOptional()
   @IsString()
   @Length(8, 20)
-  aadhaar_number: string;
+  aadhaar_number?: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
+  @ApiProperty({ example: '12345678901234', description: 'Bank account number', required: false })
+  @IsOptional()
   @IsString()
   @Length(5, 30)
-  bank_account_no: string;
+  bank_account_no?: string;
 
-  @ApiProperty({ example: 'BANK0001234', description: 'IFSC code' })
-  @IsNotEmpty()
+  @ApiProperty({ example: 'BANK0001234', description: 'IFSC code', required: false })
+  @IsOptional()
   @IsString()
   @Length(5, 20)
-  ifsc_code: string;
+  ifsc_code?: string;
 
-  // @ApiPropertyOptional({ example: 'https://example.com/photo.jpg', description: 'Profile photo URL' })
+  // ── Fisherman-specific fields ──
+
+  @ApiProperty({ example: 'https://example.com/photo.jpg', description: 'Profile photo URL', required: false })
   @IsOptional()
   @IsString()
   @Length(1, 255)
   profile_photo?: string;
 
-  // @ApiPropertyOptional({ example: '2024-01-25T10:00:00Z', description: 'Registration date' })
-  @IsOptional()
-  @IsDateString()
-  registered_at?: Date;
-
-  // @ApiPropertyOptional({ example: false, description: 'Whether the fisherman is verified' })
+  @ApiProperty({ example: false, description: 'Whether the fisherman is verified', required: false })
   @IsOptional()
   @IsBoolean()
   is_verified?: boolean;
 
-  // @ApiPropertyOptional({ enum: FishermanStatus, example: FishermanStatus.ACTIVE, description: 'Fisherman status' })
+  @ApiProperty({ enum: FishermanStatus, example: FishermanStatus.PENDING, description: 'Fisherman status', required: false })
   @IsOptional()
   @IsEnum(FishermanStatus)
   status?: FishermanStatus;
-
-  @ApiProperty({ enum: FishermanRole, example: FishermanRole.FISHERMAN, description: 'Fisherman role' })
-  @IsOptional()
-  @IsEnum(FishermanRole)
-  role?: FishermanRole;
 }

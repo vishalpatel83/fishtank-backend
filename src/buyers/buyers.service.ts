@@ -16,32 +16,32 @@ export class BuyersService {
     ) { }
 
     async create(createBuyerDto: CreateBuyerDto) {
-        const { password, ...buyerData } = createBuyerDto;
+        const { name, email, phone, password, address, ...buyerSpecific } = createBuyerDto;
 
-        // 1. Create a user first
+        // 1. Create a user first with common fields
         const user = await this.usersService.create({
-            name: createBuyerDto.name,
-            email: createBuyerDto.email,
-            mobile_number: createBuyerDto.phone,
-            password: password,
+            name,
+            email,
+            phone,
+            password,
+            address,
             role: UserRole.INDUSTRY_BUYER,
         });
 
-        // 2. Create the buyer with the user_id
+        // 2. Create the buyer with only role-specific fields + user_id
         const buyer = this.buyersRepository.create({
-            ...buyerData,
-            password_hash: password, // Still keeping this for now as per current schema
+            ...buyerSpecific,
             user_id: user.id,
         });
         return await this.buyersRepository.save(buyer);
     }
 
     async findAll() {
-        return await this.buyersRepository.find();
+        return await this.buyersRepository.find({ relations: ['user'] });
     }
 
     async findOne(id: number) {
-        return await this.buyersRepository.findOne({ where: { id } });
+        return await this.buyersRepository.findOne({ where: { id }, relations: ['user'] });
     }
 
     async update(id: number, updateBuyerDto: UpdateBuyerDto) {

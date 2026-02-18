@@ -9,9 +9,9 @@ import {
 import { Fisherman } from '../../fishermen/entities/fisherman.entity';
 
 export enum FishLotStatus {
-    AVAILABLE = 'Available',
-    SOLD = 'Sold',
-    CANCELLED = 'Cancelled',
+    AVAILABLE = 'available',
+    SOLD = 'sold',
+    CANCELLED = 'cancelled',
 }
 
 @Entity('fish_lots')
@@ -41,6 +41,18 @@ export class FishLot {
         default: FishLotStatus.AVAILABLE,
     })
     status: FishLotStatus;
+
+    @Column({ type: 'date', nullable: true })
+    catch_date: Date;
+
+    @Column({ length: 255, nullable: true })
+    catch_location: string;
+
+    @Column({ type: 'text', nullable: true })
+    notes: string;
+
+    @Column({ length: 50, nullable: true })
+    quality_grade: string;
 
     @CreateDateColumn()
     added_at: Date;

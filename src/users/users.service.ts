@@ -72,4 +72,13 @@ export class UsersService {
         await this.usersRepository.delete(id);
         return user;
     }
+
+      async findByUsername(username: string): Promise<User | null> {
+        return this.usersRepository.findOne({
+            where: [
+                { email: username },
+                { mobile_number: username }
+            ]
+        });
+    }
 }

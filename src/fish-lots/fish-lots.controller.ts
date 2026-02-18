@@ -54,6 +54,7 @@ export class FishLotsController {
                 false,
                 error.message,
             ).result;
+            console.log(result);
             return res.status(HttpStatus.BAD_REQUEST).json(result);
         }
     }
