@@ -75,6 +75,58 @@ export class OrdersController {
         }
     }
 
+    @Get('pending')
+    @ApiOperation({ summary: 'Get all pending orders' })
+    @ApiResponse({ status: 200, description: 'List of pending orders retrieved' })
+    async findPending(@Res() res: Response) {
+        try {
+            const data = await this.ordersService.findPending();
+            const result = new ResultModal(
+                data,
+                'Pending orders retrieved successfully',
+                HttpStatus.OK,
+                true,
+                '',
+            ).result;
+            return res.status(HttpStatus.OK).json(result);
+        } catch (error) {
+            const result = new ResultModal(
+                {},
+                'Failed to retrieve pending orders',
+                HttpStatus.BAD_REQUEST,
+                false,
+                error.message,
+            ).result;
+            return res.status(HttpStatus.BAD_REQUEST).json(result);
+        }
+    }
+
+    @Get('delivery')
+    @ApiOperation({ summary: 'Get delivery schedule orders' })
+    @ApiResponse({ status: 200, description: 'Delivery schedule retrieved' })
+    async findDelivery(@Res() res: Response) {
+        try {
+            const data = await this.ordersService.findDelivery();
+            const result = new ResultModal(
+                data,
+                'Delivery schedule retrieved successfully',
+                HttpStatus.OK,
+                true,
+                '',
+            ).result;
+            return res.status(HttpStatus.OK).json(result);
+        } catch (error) {
+            const result = new ResultModal(
+                {},
+                'Failed to retrieve delivery schedule',
+                HttpStatus.BAD_REQUEST,
+                false,
+                error.message,
+            ).result;
+            return res.status(HttpStatus.BAD_REQUEST).json(result);
+        }
+    }
+
     @Get(':id')
     @ApiOperation({ summary: 'Get order by ID' })
     @ApiParam({ name: 'id', type: 'number', description: 'Order ID' })
@@ -106,6 +158,84 @@ export class OrdersController {
             const result = new ResultModal(
                 {},
                 'Error retrieving order',
+                HttpStatus.BAD_REQUEST,
+                false,
+                error.message,
+            ).result;
+            return res.status(HttpStatus.BAD_REQUEST).json(result);
+        }
+    }
+
+    @Post(':id/accept')
+    @ApiOperation({ summary: 'Accept an order' })
+    @ApiParam({ name: 'id', type: 'number', description: 'Order ID' })
+    @ApiResponse({ status: 200, description: 'Order accepted successfully' })
+    @ApiResponse({ status: 404, description: 'Order not found' })
+    async acceptOrder(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
+        try {
+            const data = await this.ordersService.acceptOrder(id);
+            if (data) {
+                const result = new ResultModal(
+                    data,
+                    'Order accepted successfully',
+                    HttpStatus.OK,
+                    true,
+                    '',
+                ).result;
+                return res.status(HttpStatus.OK).json(result);
+            } else {
+                const result = new ResultModal(
+                    {},
+                    'Order not found',
+                    HttpStatus.NOT_FOUND,
+                    false,
+                    '',
+                ).result;
+                return res.status(HttpStatus.NOT_FOUND).json(result);
+            }
+        } catch (error) {
+            const result = new ResultModal(
+                {},
+                'Error accepting order',
+                HttpStatus.BAD_REQUEST,
+                false,
+                error.message,
+            ).result;
+            return res.status(HttpStatus.BAD_REQUEST).json(result);
+        }
+    }
+
+    @Post(':id/reject')
+    @ApiOperation({ summary: 'Reject an order' })
+    @ApiParam({ name: 'id', type: 'number', description: 'Order ID' })
+    @ApiResponse({ status: 200, description: 'Order rejected successfully' })
+    @ApiResponse({ status: 404, description: 'Order not found' })
+    async rejectOrder(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
+        try {
+            const data = await this.ordersService.rejectOrder(id);
+            if (data) {
+                const result = new ResultModal(
+                    data,
+                    'Order rejected successfully',
+                    HttpStatus.OK,
+                    true,
+                    '',
+                ).result;
+                return res.status(HttpStatus.OK).json(result);
+            } else {
+                const result = new ResultModal(
+                    {},
+                    'Order not found',
+                    HttpStatus.NOT_FOUND,
+                    false,
+                    '',
+                ).result;
+                return res.status(HttpStatus.NOT_FOUND).json(result);
+            }
+        } catch (error) {
+            const result = new ResultModal(
+                {},
+                'Error rejecting order',
                 HttpStatus.BAD_REQUEST,
                 false,
                 error.message,

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Order } from './entities/order.entity';
+import { Order, OrderStatus } from './entities/order.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
@@ -40,5 +40,33 @@ export class OrdersService {
         if (!order) return null;
         await this.ordersRepository.delete(id);
         return order;
+    }
+
+    async findPending() {
+        return await this.ordersRepository.find({
+            where: { status: OrderStatus.PENDING },
+            relations: ['fishLot', 'buyer'],
+        });
+    }
+
+    async findDelivery() {
+        return await this.ordersRepository.find({
+            where: { status: OrderStatus.PICKED },
+            relations: ['fishLot', 'buyer'],
+        });
+    }
+
+    async acceptOrder(id: number) {
+        const order = await this.findOne(id);
+        if (!order) return null;
+        order.status = OrderStatus.PICKED;
+        return await this.ordersRepository.save(order);
+    }
+
+    async rejectOrder(id: number) {
+        const order = await this.findOne(id);
+        if (!order) return null;
+        order.status = OrderStatus.CANCELLED;
+        return await this.ordersRepository.save(order);
     }
 }
