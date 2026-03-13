@@ -19,7 +19,7 @@ export class DeliveryPartnersService {
         const { name, email, phone, password, address, ...partnerSpecific } = createDeliveryPartnerDto;
 
         // 1. Create a user first with common fields
-        const user = await this.usersService.create({
+        const { user } = await this.usersService.create({
             name,
             email,
             phone,
