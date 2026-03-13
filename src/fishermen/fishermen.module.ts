@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FishermenService } from './fishermen.service';
 import { FishermenController } from './fishermen.controller';
@@ -17,7 +17,7 @@ import { UsersModule } from '../users/users.module';
  * Provides integration with the database through TypeORM
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([Fisherman]), UsersModule],
+  imports: [TypeOrmModule.forFeature([Fisherman]), forwardRef(() => UsersModule)],
   controllers: [FishermenController],
   providers: [FishermenService],
 })
