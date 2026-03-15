@@ -12,6 +12,7 @@ import { OrdersModule } from './orders/orders.module';
 import { DeliveriesModule } from './deliveries/deliveries.module';
 import { UsersModule } from './users/users.module';
 import { DeliveryPartnersModule } from './delivery-partners/delivery-partners.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { DeliveryPartnersModule } from './delivery-partners/delivery-partners.mo
     DeliveriesModule,
     UsersModule,
     DeliveryPartnersModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

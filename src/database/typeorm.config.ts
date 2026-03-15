@@ -14,9 +14,9 @@ export const typeOrmConfig = (): TypeOrmModuleOptions => ({
   host: 'localhost',
   port: 3306,
   username: 'root', // Your actual MySQL username
-  password: 'root@123', // Your actual MySQL password
+  password: '', // Your actual MySQL password
   database: 'fisherman_db',
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   synchronize: true,
   // })
 });
